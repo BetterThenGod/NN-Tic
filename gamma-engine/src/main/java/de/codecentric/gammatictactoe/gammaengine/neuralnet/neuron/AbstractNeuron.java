@@ -1,5 +1,6 @@
 package de.codecentric.gammatictactoe.gammaengine.neuralnet.neuron;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractNeuron {
@@ -16,10 +17,12 @@ public abstract class AbstractNeuron {
         this.weightInNum = weightInNum;
         this.weightOutNum = weightOutNum;
 
+        weightInList = new ArrayList<>();
         for (int i = 0; i < weightInNum; i++) {
             weightInList.add(initialWeight());
         }
 
+        weightOutList = new ArrayList<>();
         for (int o = 0; o < weightInNum; o++) {
             weightOutList.add(initialWeight());
         }

@@ -1,7 +1,9 @@
 package de.codecentric.gammatictactoe.gammaengine.neuralnet.neuron;
 
 import de.codecentric.gammatictactoe.gammaengine.board.Board;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HiddenNeuron extends AbstractNeuron {
 
     private Board board;

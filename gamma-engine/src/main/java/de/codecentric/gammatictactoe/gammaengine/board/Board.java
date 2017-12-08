@@ -1,14 +1,10 @@
 package de.codecentric.gammatictactoe.gammaengine.board;
 
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
 public class Board {
 
     private static final int X_DIMENSION = 3;
@@ -17,8 +13,10 @@ public class Board {
 
     private Map<Integer, Field> playingBoard = new HashMap<>();
 
+    public Board() {
+        initialize();
+    }
 
-    @PostConstruct
     public void initialize() {
         for (int x = 1; x <= X_DIMENSION; x++) {
             for (int y = 1; y <= Y_DIMENSION; y++) {
