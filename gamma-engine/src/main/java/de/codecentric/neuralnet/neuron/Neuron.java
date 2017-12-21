@@ -1,9 +1,9 @@
-package de.codecentric.gammatictactoe.gammaengine.neuralnet.neuron;
+package de.codecentric.neuralnet.neuron;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractNeuron {
+public class Neuron {
 
     private List<Double> weightInList;
 
@@ -13,7 +13,10 @@ public abstract class AbstractNeuron {
 
     private int weightOutNum;
 
-    public void initialize(int weightInNum, int weightOutNum) {
+    private int number;
+
+    public void initialize(int number, int weightInNum, int weightOutNum) {
+        this.number = number;
         this.weightInNum = weightInNum;
         this.weightOutNum = weightOutNum;
 
@@ -23,9 +26,23 @@ public abstract class AbstractNeuron {
         }
 
         weightOutList = new ArrayList<>();
-        for (int o = 0; o < weightInNum; o++) {
+        for (int o = 0; o < weightOutNum; o++) {
             weightOutList.add(initialWeight());
         }
+    }
+
+    public void print() {
+        System.out.print("Input weights for neuron " + number + ": ");
+        for (int i = 0; i < weightInNum; i++) {
+            System.out.print("[" + weightInList.get(i) + "] ");
+        }
+        System.out.println();
+
+        System.out.print("Output weights for neuron " + number + ": ");
+        for (int i = 0; i < weightOutNum; i++) {
+            System.out.print("[" + weightOutList.get(i) + "] ");
+        }
+        System.out.println();
     }
 
     public List<Double> getWeightInList() {
@@ -47,5 +64,7 @@ public abstract class AbstractNeuron {
     private double initialWeight() {
         return Math.random();
     }
+
+
 
 }

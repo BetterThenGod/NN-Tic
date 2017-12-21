@@ -1,8 +1,8 @@
-package de.codecentric.gammatictactoe.gammaengine;
+package de.codecentric.game.tictactoe;
 
-import de.codecentric.gammatictactoe.gammaengine.board.Board;
-import de.codecentric.gammatictactoe.gammaengine.board.Owner;
-import de.codecentric.gammatictactoe.gammaengine.neuralnet.NeuralNet;
+import de.codecentric.game.tictactoe.board.Board;
+import de.codecentric.game.tictactoe.board.Owner;
+import de.codecentric.neuralnet.NeuralNet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,14 +12,14 @@ import org.springframework.context.annotation.ComponentScan;
 import java.util.Scanner;
 
 @SpringBootApplication
-@ComponentScan("de.codecentric.gammatictactoe.gammaengine")
-public class GammaEngineApplication implements CommandLineRunner {
+@ComponentScan("de.codecentric")
+public class TicTacToeApplication implements CommandLineRunner {
 
     @Autowired
     private NeuralNet neuralNet;
 
 	public static void main(String[] args) {
-		SpringApplication.run(GammaEngineApplication.class, args);
+		SpringApplication.run(TicTacToeApplication.class, args);
 	}
 
     @Override
@@ -30,6 +30,8 @@ public class GammaEngineApplication implements CommandLineRunner {
 
 
     public void train() {
+
+	    neuralNet.print();
 
         Board board = new Board();
 

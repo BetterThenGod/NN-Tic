@@ -1,4 +1,4 @@
-package de.codecentric.gammatictactoe.gammaengine.board;
+package de.codecentric.game.tictactoe.board;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class Board {
 
-    private static final int X_DIMENSION = 3;
+    private static final int ROW_DIMENSION = 3;
 
-    private static final int Y_DIMENSION = 3;
+    private static final int COL_DIMENSION = 3;
 
     private Map<Integer, Field> playingBoard = new HashMap<>();
 
@@ -18,10 +18,10 @@ public class Board {
     }
 
     public void initialize() {
-        for (int x = 1; x <= X_DIMENSION; x++) {
-            for (int y = 1; y <= Y_DIMENSION; y++) {
-                Field f = new Field(number(x, y));
-                playingBoard.put(number(x, y), f);
+        for (int row = 1; row <= ROW_DIMENSION; row++) {
+            for (int col = 1; col <= COL_DIMENSION; col++) {
+                Field f = new Field(number(row, col));
+                playingBoard.put(number(row, col), f);
             }
         }
     }
@@ -33,11 +33,10 @@ public class Board {
 
     public Board copy() {
         Board board = new Board();
-        for (int x = 1; x <= X_DIMENSION; x++) {
-            for (int y = 1; y <= Y_DIMENSION; y++) {
-                Field f = this.playingBoard.get(number(x, y));
+        for (int row = 1; row <= ROW_DIMENSION; row++) {
+            for (int col = 1; col <= COL_DIMENSION; col++) {
+                Field f = this.playingBoard.get(number(row, col));
                 board.setField(f.getNumber(), f.copy());
-
             }
         }
 
@@ -47,10 +46,10 @@ public class Board {
     public List<Integer> validMoves() {
 
         List<Integer> validMoves = new ArrayList<>();
-        for (int x = 1; x <= X_DIMENSION; x++) {
-            for (int y = 1; y <= Y_DIMENSION; y++) {
-                if (isValid(x, y)) {
-                    validMoves.add(number(x, y));
+        for (int row = 1; row <= ROW_DIMENSION; row++) {
+            for (int col = 1; col <= COL_DIMENSION; col++) {
+                if (isValid(row, col)) {
+                    validMoves.add(number(row, col));
                 }
             }
         }
@@ -58,13 +57,13 @@ public class Board {
         return validMoves;
     }
 
-    public boolean isValid(int x, int y) {
-        return isValid((number(x, y)));
+    public boolean isValid(int row, int col) {
+        return isValid((number(row, col)));
     }
 
     public boolean isValid(int n) {
 
-        if (n > X_DIMENSION * Y_DIMENSION) {
+        if (n > ROW_DIMENSION * COL_DIMENSION) {
             return false;
         } else if (playingBoard.get(n).getOwner() == Owner.NONE) {
             return true;
@@ -78,39 +77,39 @@ public class Board {
 
         boolean won = false;
 
-        // Check three in a row linewise
-        for (int x = 1; x <= X_DIMENSION; x++) {
-            int line = 0;
-            for (int y = 1; y <= Y_DIMENSION; y++) {
-                if (playingBoard.get(number(x, y)).getOwner() == o) {
-                    line++;
+        // Check three in a row
+        for (int row = 1; row <= ROW_DIMENSION; row++) {
+            int count = 0;
+            for (int col = 1; col <= COL_DIMENSION; col++) {
+                if (playingBoard.get(number(row, col)).getOwner() == o) {
+                    count++;
                 } else {
                     break;
                 }
             }
-            if (line == Y_DIMENSION) {
+            if (count == COL_DIMENSION) {
                 won = true;
             }
         }
 
-        // Check three in a row linewise
-        for (int y = 1; y <= Y_DIMENSION; y++) {
-            int row = 0;
-            for (int x = 1; x <= X_DIMENSION; x++) {
-                if (playingBoard.get(number(x, y)).getOwner() == o) {
-                    row++;
+        // Check three in a col
+        for (int col = 1; col <= COL_DIMENSION; col++) {
+            int count = 0;
+            for (int row = 1; row <= ROW_DIMENSION; row++) {
+                if (playingBoard.get(number(row, col)).getOwner() == o) {
+                    count++;
                 } else {
                     break;
                 }
             }
-            if (row == X_DIMENSION) {
+            if (count == ROW_DIMENSION) {
                 won = true;
             }
         }
 
         // Check three diagonal left top to right bottom
         int diagonal = 0;
-        for (int x = 1; x <= X_DIMENSION; x++) {
+        for (int x = 1; x <= ROW_DIMENSION; x++) {
 
             if (playingBoard.get(number(x, x)).getOwner() == o) {
                 diagonal++;
@@ -119,14 +118,14 @@ public class Board {
             }
         }
 
-        if (diagonal == Y_DIMENSION) {
+        if (diagonal == COL_DIMENSION) {
             won = true;
         }
 
 
         // Check three diagonal left bottom to right top
         diagonal = 0;
-        for (int x = X_DIMENSION; x > 0; x--) {
+        for (int x = ROW_DIMENSION; x > 0; x--) {
 
             if (playingBoard.get(number(x, x)).getOwner() == o) {
                 diagonal++;
@@ -135,7 +134,7 @@ public class Board {
             }
         }
 
-        if (diagonal == Y_DIMENSION) {
+        if (diagonal == COL_DIMENSION) {
             won = true;
         }
 
@@ -146,9 +145,9 @@ public class Board {
     public void printToScreen() {
 
         System.out.println("==========================");
-        for (int x = 1; x <= X_DIMENSION; x++) {
-            for (int y = 1; y <= Y_DIMENSION; y++) {
-                Field f = playingBoard.get(number(x, y));
+        for (int row = 1; row <= ROW_DIMENSION; row++) {
+            for (int col = 1; col <= COL_DIMENSION; col++) {
+                Field f = playingBoard.get(number(row, col));
                 System.out.print(f.screenRepresentation());
             }
             System.out.println();
@@ -157,12 +156,16 @@ public class Board {
 
     }
 
+    public Field getField(int number) {
+        return playingBoard.get(number);
+    }
+
     private void setField(int number, Field f) {
         playingBoard.put(number, f);
     }
 
     private int number(int x, int y) {
-        return ((x-1) * Y_DIMENSION) + y;
+        return ((x-1) * COL_DIMENSION) + y;
     }
 
 }

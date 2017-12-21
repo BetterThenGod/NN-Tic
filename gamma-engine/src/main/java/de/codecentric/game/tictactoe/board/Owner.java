@@ -1,4 +1,4 @@
-package de.codecentric.gammatictactoe.gammaengine.board;
+package de.codecentric.game.tictactoe.board;
 
 public enum Owner {
 

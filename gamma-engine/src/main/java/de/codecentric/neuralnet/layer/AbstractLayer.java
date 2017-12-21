@@ -1,5 +1,6 @@
-package de.codecentric.gammatictactoe.gammaengine.neuralnet.layer;
+package de.codecentric.neuralnet.layer;
 
+import de.codecentric.neuralnet.neuron.Neuron;
 
 public abstract class AbstractLayer {
 
@@ -14,5 +15,14 @@ public abstract class AbstractLayer {
         return neuronNum;
     }
 
+    public void print() {
+        for (int i = 0; i < getNeuronNum(); i++) {
+            getNeuron(i).print();
+        }
+    }
+
     abstract void subInitialize();
+
+    abstract Neuron getNeuron(int num);
+
 }
