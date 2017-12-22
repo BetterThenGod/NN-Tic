@@ -52,7 +52,8 @@ public class TicTacToeApplication implements CommandLineRunner {
         int draws = 0;
         TimeSeries timeSeries = new TimeSeries();
 
-        int startGameToggle = 0;
+        Owner gammaColor = Owner.BLUE;
+        Owner randomColor = Owner.RED;
 
         for (int i = 0; i < trainingRuns; i++) {
 
@@ -65,18 +66,17 @@ public class TicTacToeApplication implements CommandLineRunner {
 
                 moveNum++;
 
-                if (moveNum > 1 || startGameToggle % 2 == 0) {
-                    int blueMove = neuralNet.makeMove(board.copy(), Owner.BLUE);
-                    board.move(blueMove, Owner.BLUE);
-                    gammaWonFlag = checkWon(board, Owner.BLUE, "Gamma won!");
+                if (moveNum > 1 || gammaColor == Owner.BLUE) {
+                    int blueMove = neuralNet.makeMove(board.copy(), gammaColor);
+                    board.move(blueMove, gammaColor);
+                    gammaWonFlag = checkWon(board, gammaColor, "Gamma won as " + gammaColor + "!");
                     drawFlag = checkDraw(board);
-                    startGameToggle++;
                 }
 
                 if (!gammaWonFlag && !drawFlag) {
                     int redMove = randomPlayer.makeMove(board.copy());
                     board.move(redMove, Owner.RED);
-                    randomWonFlag = checkWon(board, Owner.RED, "Mr. Random won!");
+                    randomWonFlag = checkWon(board, randomColor, "Mr. Random won as " + randomColor + "!");
                     drawFlag = checkDraw(board);
                 }
 
@@ -89,6 +89,14 @@ public class TicTacToeApplication implements CommandLineRunner {
                 }
 
                 if (gammaWonFlag || randomWonFlag || drawFlag) {
+                    if (gammaColor == Owner.BLUE) {
+                        gammaColor = Owner.RED;
+                        randomColor = Owner.BLUE;
+                    } else {
+                        gammaColor = Owner.BLUE;
+                        randomColor = Owner.RED;
+                    }
+
                     timeSeries.add(gammaWins, randomWins, draws);
                 }
             }
