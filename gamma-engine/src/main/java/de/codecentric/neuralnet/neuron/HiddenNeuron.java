@@ -1,7 +1,7 @@
 package de.codecentric.neuralnet.neuron;
 
 import de.codecentric.game.tictactoe.board.Field;
-import de.codecentric.game.tictactoe.board.Owner;
+import de.codecentric.game.tictactoe.board.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class HiddenNeuron extends Neuron {
 
         List<Integer> possibleMoves = new ArrayList<>();
         for (int i = 0; i < fields.size(); i++) {
-            if (fields.get(i).getOwner() == Owner.NONE) {
+            if (fields.get(i).getOwner() == Player.NONE) {
                 possibleMoves.add(i);
             }
         }
@@ -43,9 +43,9 @@ public class HiddenNeuron extends Neuron {
         double noneValue = 0;
 
         for (Field f : fields) {
-            if (f.getOwner() == Owner.BLUE) {
+            if (f.getOwner() == Player.O) {
                 blueValue += f.getValue();
-            } else if (f.getOwner() == Owner.RED) {
+            } else if (f.getOwner() == Player.X) {
                 redValue += f.getValue();
             } else {
                 noneValue += f.getValue();

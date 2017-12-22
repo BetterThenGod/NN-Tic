@@ -26,7 +26,7 @@ public class Board {
         }
     }
 
-    public void move(int number, Owner owner) {
+    public void move(int number, Player owner) {
         Field f = playingBoard.get(number);
         f.setOwner(owner);
     }
@@ -65,7 +65,7 @@ public class Board {
 
         if (n > ROW_DIMENSION * COL_DIMENSION) {
             return false;
-        } else if (playingBoard.get(n).getOwner() == Owner.NONE) {
+        } else if (playingBoard.get(n).getOwner() == Player.NONE) {
             return true;
         } else {
             return false;
@@ -73,7 +73,7 @@ public class Board {
     }
 
 
-    public boolean won(Owner o) {
+    public boolean isWon(Player o) {
 
         boolean won = false;
 
@@ -138,8 +138,38 @@ public class Board {
             won = true;
         }
 
-
         return won;
+    }
+
+    public boolean isDraw() {
+        if (validMoves().size() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean gameEnded() {
+
+        if (isDraw()) {
+            printToScreen();
+            System.out.println("Game is draw!");
+            return true;
+        }
+
+        if (isWon(Player.O)) {
+            printToScreen();
+            System.out.println("Game won by " + Player.O.getRepresentation() + "!");
+            return true;
+        }
+
+        if (isWon(Player.X)) {
+            printToScreen();
+            System.out.println("Game won by " + Player.X.getRepresentation() + "!");
+            return true;
+        }
+
+        return false;
     }
 
     public void printToScreen() {

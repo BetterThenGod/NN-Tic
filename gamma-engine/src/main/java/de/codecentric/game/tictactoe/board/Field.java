@@ -2,7 +2,7 @@ package de.codecentric.game.tictactoe.board;
 
 public class Field {
 
-    private Owner owner;
+    private Player owner;
 
     private int number;
 
@@ -10,7 +10,7 @@ public class Field {
 
     public Field(int number) {
         this.number = number;
-        owner = Owner.NONE;
+        owner = Player.NONE;
 
         switch (number) {
 
@@ -34,7 +34,7 @@ public class Field {
         }
     }
 
-    public Field(int number, Owner owner) {
+    public Field(int number, Player owner) {
         this.number = number;
         this.owner = owner;
     }
@@ -44,11 +44,11 @@ public class Field {
         return f;
     }
 
-    public Owner getOwner() {
+    public Player getOwner() {
         return owner;
     }
 
-    public void setOwner(Owner owner) {
+    public void setOwner(Player owner) {
         this.owner = owner;
     }
 

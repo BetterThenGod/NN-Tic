@@ -1,16 +1,16 @@
 package de.codecentric.game.tictactoe.board;
 
-public enum Owner {
+public enum Player {
 
     NONE("-"),
 
-    BLUE("O"),
+    O("O"),
 
-    RED("X");
+    X("X");
 
     private String representation;
 
-    Owner(String represnetation) {
+    Player(String represnetation) {
         this.representation = represnetation;
     }
 

@@ -1,6 +1,5 @@
 package de.codecentric.neuralnet.layer;
 
-import de.codecentric.neuralnet.neuron.HiddenNeuron;
 import de.codecentric.neuralnet.neuron.OutputNeuron;
 
 import java.util.ArrayList;

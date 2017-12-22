@@ -1,14 +1,13 @@
 package de.codecentric.neuralnet;
 
 import de.codecentric.game.tictactoe.board.Board;
-import de.codecentric.game.tictactoe.board.Owner;
+import de.codecentric.game.tictactoe.board.Player;
 import de.codecentric.neuralnet.layer.HiddenLayer;
 import de.codecentric.neuralnet.layer.InputLayer;
 import de.codecentric.neuralnet.layer.OutputLayer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @Component
 public class NeuralNet {
@@ -34,16 +33,19 @@ public class NeuralNet {
     }
 
 
-    public int makeMove(Board board, Owner owner) {
+    public int makeMove(Board board, Player owner, boolean trainingEnabled) {
 
         inputLayer.fire(board);
         hiddenLayer.fire(inputLayer);
         int move = outputLayer.fire(hiddenLayer);
 
         board.move(move, owner);
-        if (board.won(owner)) {
-            hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
-            inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+
+        if (trainingEnabled) {
+            if (board.isWon(owner)) {
+                hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+                inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+            }
         }
 
         return move;

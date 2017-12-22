@@ -19,10 +19,10 @@ public class TimeSeries {
         drawsTimeSeries.add(draws);
     }
 
-    public void write() {
+    public void write(String fileName) {
         BufferedWriter writer = null;
         try {
-            File timeSeriesFile = new File("gamma-series.csv");
+            File timeSeriesFile = new File(fileName);
             writer = new BufferedWriter(new FileWriter(timeSeriesFile));
 
             int i = 1;
