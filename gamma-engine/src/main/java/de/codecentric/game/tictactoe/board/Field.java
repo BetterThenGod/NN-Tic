@@ -29,7 +29,7 @@ public class Field {
                 break;
 
             case 5:
-                value = 0.3d;
+                value = 0.25d;
                 break;
         }
     }

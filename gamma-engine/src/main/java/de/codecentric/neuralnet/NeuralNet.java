@@ -1,6 +1,7 @@
 package de.codecentric.neuralnet;
 
 import de.codecentric.game.tictactoe.board.Board;
+import de.codecentric.game.tictactoe.board.Owner;
 import de.codecentric.neuralnet.layer.HiddenLayer;
 import de.codecentric.neuralnet.layer.InputLayer;
 import de.codecentric.neuralnet.layer.OutputLayer;
@@ -33,6 +34,21 @@ public class NeuralNet {
     }
 
 
+    public int makeMove(Board board, Owner owner) {
+
+        inputLayer.fire(board);
+        hiddenLayer.fire(inputLayer);
+        int move = outputLayer.fire(hiddenLayer);
+
+        board.move(move, owner);
+        if (board.won(owner)) {
+            hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+            inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+        }
+
+        return move;
+    }
+
     public void print() {
         System.out.println();
         System.out.println("==================================================");
@@ -51,10 +67,5 @@ public class NeuralNet {
         System.out.println("O u t p u t  L a y e r");
         System.out.println("==================================================");
         outputLayer.print();
-    }
-
-    public int calculate(Board board) {
-        List<Integer> validMoves = board.validMoves();
-        return validMoves.get(0);
     }
 }

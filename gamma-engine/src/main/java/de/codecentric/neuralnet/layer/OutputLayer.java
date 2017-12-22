@@ -1,5 +1,6 @@
 package de.codecentric.neuralnet.layer;
 
+import de.codecentric.neuralnet.neuron.HiddenNeuron;
 import de.codecentric.neuralnet.neuron.OutputNeuron;
 
 import java.util.ArrayList;
@@ -24,5 +25,9 @@ public class OutputLayer extends AbstractLayer {
     @Override
     public OutputNeuron getNeuron(int num) {
         return outputNeurons.get(num);
+    }
+
+    public int fire(HiddenLayer hiddenLayer) {
+        return outputNeurons.get(0).fire(hiddenLayer.getCandidateMoves(), hiddenLayer.getOutputWeigths(0));
     }
 }
