@@ -38,7 +38,7 @@ public class TimeSeries {
             }
             writer.newLine();
 
-            writer.write("Randome wins:,");
+            writer.write("Random wins:,");
             for (Integer n : randomTimeSeries) {
                 writer.write(n + ",");
             }

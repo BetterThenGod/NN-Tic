@@ -58,8 +58,8 @@ public class Training {
 
                     moveNum++;
                     if (moveNum > 1 || gammaColor == Player.O) {
-                        //int blueMove = neuralNet.makeMove(board.copy(), gammaColor, trainingEnabled);
-                        int gammaMove = randomPlayer.makeMove(board.copy());
+                        int gammaMove = neuralNet.makeMove(board.copy(), gammaColor, trainingEnabled);
+                        //int gammaMove = randomPlayer.makeMove(board.copy());
                         board.move(gammaMove, gammaColor);
                         if (board.gameEnded()) {
                             gameEndedFlag = true;
