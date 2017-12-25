@@ -1,8 +1,10 @@
 package de.codecentric.neuralnet;
 
+import de.codecentric.game.playing.AutoPlay;
+import de.codecentric.game.playing.GameResult;
 import de.codecentric.game.tictactoe.board.Board;
 import de.codecentric.game.tictactoe.board.Player;
-import de.codecentric.game.tools.RandomPlayer;
+import de.codecentric.game.tools.RandomEngine;
 import de.codecentric.game.tools.TimeSeries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,105 +14,106 @@ import org.springframework.stereotype.Component;
 public class Training {
 
     @Autowired
-    private NeuralNet neuralNet;
+    private GammaEngine gammaEngine;
 
     @Autowired
-    private RandomPlayer randomPlayer;
+    private RandomEngine randomeEngine;
 
-    @Value("${trainingRuns}")
+    @Autowired
+    private AutoPlay autoPlay;
+
+    @Value("${training.runs}")
     private int trainingRuns;
 
-    @Value("${overallRuns}")
-    private int overallRuns;
+    @Value("${training.opponent}")
+    private String trainingOpponent;
 
-    @Value("${outerRuns}")
-    private int outerRuns;
+    @Value("${autoplay.games}")
+    private int autoplayGames;
+
+    @Value("${autoplay.matches}")
+    private int autoplayMatches;
+
+    @Value("${autoplay.opponent}")
+    private String autoplayOpponent;
+
+
+    private Player gammaPlayer = Player.X;
+
+    private Player opponentPlayer = Player.O;
 
 
     public void start() {
 
+        Player gammaPlayer = Player.X;
+        Player opponentPlayer = Player.O;
+
+        for (int i = 0; i < trainingRuns; i++) {
+            if (trainingOpponent.equals("random")) {
+                autoPlay.play(gammaEngine, randomeEngine, gammaPlayer, opponentPlayer, true);
+            } else if (trainingOpponent.equals("gamma")) {
+                autoPlay.play(gammaEngine, gammaEngine, gammaPlayer, opponentPlayer, true);
+            } else {
+                throw new RuntimeException("Unknown engine defined for training.opponent");
+            }
+            togglePlayer();
+        }
+
         TimeSeries overallSeries = new TimeSeries();
 
-        for (int j = 0; j < outerRuns; j++) {
+        for (int j = 0; j < autoplayMatches; j++) {
 
             Board board = new Board();
 
             int gammaWins = 0;
-            int randomWins = 0;
+            int opponentWins = 0;
             int draws = 0;
             TimeSeries timeSeries = new TimeSeries();
 
-            Player gammaColor = Player.O;
-            Player randomColor = Player.X;
+            for (int i = 0; i < autoplayGames; i++) {
 
-            boolean trainingEnabled = true;
+                GameResult gameResult;
 
-            for (int i = 0; i < overallRuns; i++) {
-
-                if (i > trainingRuns) {
-                    trainingEnabled = false;
+                if (autoplayOpponent.equals("random")) {
+                    gameResult = autoPlay.play(gammaEngine, randomeEngine, gammaPlayer, opponentPlayer, false);
+                } else if (autoplayOpponent.equals("gamma")) {
+                    gameResult = autoPlay.play(gammaEngine, gammaEngine, gammaPlayer, opponentPlayer, false);
+                } else {
+                    throw new RuntimeException("Unknown engine defined for autoplay.opponent");
                 }
 
-                boolean gameEndedFlag = false;
-                int moveNum = 0;
-
-                while (!gameEndedFlag) {
-
-                    moveNum++;
-                    if (moveNum > 1 || gammaColor == Player.O) {
-                        int gammaMove = neuralNet.makeMove(board.copy(), gammaColor, trainingEnabled);
-                        //int gammaMove = randomPlayer.makeMove(board.copy());
-                        board.move(gammaMove, gammaColor);
-                        if (board.gameEnded()) {
-                            gameEndedFlag = true;
-                            if (board.isWon(gammaColor)) {
-                                gammaWins++;
-                            } else {
-                                draws++;
-                            }
-                            board.initialize();
-                        }
-                    }
-
-                    if (!gameEndedFlag) {
-                        int randomMove = randomPlayer.makeMove(board.copy());
-                        board.move(randomMove, randomColor);
-                        if (board.gameEnded()) {
-                            gameEndedFlag = true;
-                            if (board.isWon(randomColor)) {
-                                randomWins++;
-                            } else {
-                                draws++;
-                            }
-                            board.initialize();
-                        }
-                    }
-
-                    if (gameEndedFlag) {
-                        if (gammaColor == Player.O) {
-                            gammaColor = Player.X;
-                            randomColor = Player.O;
-                        } else {
-                            gammaColor = Player.O;
-                            randomColor = Player.X;
-                        }
-
-                        timeSeries.add(gammaWins, randomWins, draws);
-                    }
+                if (gameResult == GameResult.DRAW) {
+                    draws++;
+                } else if (gameResult == GameResult.ENGINE_WON) {
+                    gammaWins++;
+                } else if (gameResult == GameResult.OPPONENT_WON) {
+                    opponentWins++;
                 }
+
+                timeSeries.add(gammaWins, opponentWins, draws);
+
+                togglePlayer();
             }
 
             System.out.println("Training results:");
-            System.out.println("Gamma  wins: " + gammaWins);
-            System.out.println("Random wins: " + randomWins);
-            System.out.println("Draws      : " + draws);
+            System.out.println("Gamma  wins  : " + gammaWins);
+            System.out.println("Opponent wins: " + opponentWins);
+            System.out.println("Draws        : " + draws);
 
             timeSeries.write("series/gamma-series-" + j + ".csv");
-
-            overallSeries.add(gammaWins, randomWins, draws);
+            overallSeries.add(gammaWins, opponentWins, draws);
         }
 
         overallSeries.write("series/overall-series.csv");
     }
 
+    private void togglePlayer() {
+        if (gammaPlayer == Player.X) {
+            gammaPlayer = Player.O;
+            opponentPlayer = Player.X;
+        } else {
+            gammaPlayer = Player.X;
+            opponentPlayer = Player.O;
+        }
+    }
 }

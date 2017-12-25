@@ -1,16 +1,22 @@
 package de.codecentric.neuralnet;
 
+import de.codecentric.game.playing.Engine;
 import de.codecentric.game.tictactoe.board.Board;
 import de.codecentric.game.tictactoe.board.Player;
 import de.codecentric.neuralnet.layer.HiddenLayer;
 import de.codecentric.neuralnet.layer.InputLayer;
 import de.codecentric.neuralnet.layer.OutputLayer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 @Component
-public class NeuralNet {
+public class GammaEngine implements Engine {
+
+    @Value("${learning.stage}")
+    private int learningStage;
+
 
     private InputLayer inputLayer;
 
@@ -32,7 +38,7 @@ public class NeuralNet {
         outputLayer.initialize(1);
     }
 
-
+    @Override
     public int makeMove(Board board, Player owner, boolean trainingEnabled) {
 
         inputLayer.fire(board);
@@ -43,8 +49,10 @@ public class NeuralNet {
 
         if (trainingEnabled) {
             if (board.isWon(owner)) {
-                hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
-                inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+                if (learningStage >= 1) {
+                    hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+                    inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+                }
             }
         }
 

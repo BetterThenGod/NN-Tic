@@ -2,12 +2,9 @@ package de.codecentric.game.tictactoe;
 
 import de.codecentric.game.tictactoe.board.Board;
 import de.codecentric.game.tictactoe.board.Player;
-import de.codecentric.game.tools.RandomPlayer;
-import de.codecentric.game.tools.TimeSeries;
-import de.codecentric.neuralnet.NeuralNet;
+import de.codecentric.neuralnet.GammaEngine;
 import de.codecentric.neuralnet.Training;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +17,7 @@ import java.util.Scanner;
 public class TicTacToeApplication implements CommandLineRunner {
 
     @Autowired
-    private NeuralNet neuralNet;
+    private GammaEngine gammaEngine;
 
     @Autowired
     private Training training;
@@ -54,7 +51,7 @@ public class TicTacToeApplication implements CommandLineRunner {
                 boolean isDraw = checkDraw(board);
 
                 if (!isWon && !isDraw) {
-                    int computerMove = neuralNet.makeMove(board.copy(), Player.X, false);
+                    int computerMove = gammaEngine.makeMove(board.copy(), Player.X, false);
                     board.move(computerMove, Player.X);
                     checkWon(board, Player.X, "Computer isWon!");
 

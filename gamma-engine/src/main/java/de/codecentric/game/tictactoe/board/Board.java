@@ -151,12 +151,6 @@ public class Board {
 
     public boolean gameEnded() {
 
-        if (isDraw()) {
-            printToScreen();
-            System.out.println("Game is draw!");
-            return true;
-        }
-
         if (isWon(Player.O)) {
             printToScreen();
             System.out.println("Game won by " + Player.O.getRepresentation() + "!");
@@ -168,6 +162,13 @@ public class Board {
             System.out.println("Game won by " + Player.X.getRepresentation() + "!");
             return true;
         }
+
+        if (isDraw()) {
+            printToScreen();
+            System.out.println("Game is draw!");
+            return true;
+        }
+
 
         return false;
     }
