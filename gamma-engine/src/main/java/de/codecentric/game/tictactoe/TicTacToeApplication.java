@@ -1,7 +1,7 @@
 package de.codecentric.game.tictactoe;
 
 import de.codecentric.game.playing.HumanPlay;
-import de.codecentric.game.tools.SelfPlay;
+import de.codecentric.game.playing.SelfPlay;
 import de.codecentric.neuralnet.Training;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

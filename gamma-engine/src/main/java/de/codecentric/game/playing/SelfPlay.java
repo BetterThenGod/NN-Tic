@@ -1,7 +1,10 @@
-package de.codecentric.game.tools;
+package de.codecentric.game.playing;
 
 import de.codecentric.game.playing.AutoPlay;
 import de.codecentric.game.playing.GameResultEnum;
+import de.codecentric.game.tools.PlayerToggle;
+import de.codecentric.game.tools.RandomEngine;
+import de.codecentric.game.tools.TimeSeries;
 import de.codecentric.neuralnet.GammaEngine;
 import de.codecentric.neuralnet.Training;
 import org.springframework.beans.factory.annotation.Autowired;
