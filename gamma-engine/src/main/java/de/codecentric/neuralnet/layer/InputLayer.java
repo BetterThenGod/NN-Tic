@@ -23,8 +23,15 @@ public class InputLayer extends AbstractLayer {
     }
 
     public void fire(Board board) {
-        for (int i = 0; i < getNeuronNum(); i++) {
-            inputNeurons.get(i).fire(board.getField(i+1));
+
+        int neuronNum = 0;
+        for (int i = 1; i <= 9; i++) {
+            inputNeurons.get(neuronNum).fire(board.getField(i));
+            neuronNum++;
+            inputNeurons.get(neuronNum).fire(board.getField(i));
+            neuronNum++;
+            inputNeurons.get(neuronNum).fire(board.getField(i));
+            neuronNum++;
         }
     }
 
@@ -37,7 +44,7 @@ public class InputLayer extends AbstractLayer {
 
         List<Double> weights = new ArrayList<>();
         for (int i = 0; i < getNeuronNum(); i++) {
-            weights.add(inputNeurons.get(i).getWeightOutList().get(num));
+            weights.add(inputNeurons.get(i).getOutputWeights().get(num));
         }
 
         return weights;
@@ -54,12 +61,16 @@ public class InputLayer extends AbstractLayer {
 
     public void reward(int index) {
 
+        int inputNumIndex = index * 3;
         for (int i = 0; i < getNeuronNum(); i++) {
-            InputNeuron neuron = inputNeurons.get(i);
-            neuron.getWeightOutList().set(index, neuron.getWeightOutList().get(index) + 0.025d);
 
-            if (neuron.getWeightOutList().get(index) >= 1) {
-                neuron.getWeightOutList().set(index, 0.999d);
+            if (i == inputNumIndex) {
+                InputNeuron neuron = inputNeurons.get(i);
+                neuron.getOutputWeights().set(index, neuron.getOutputWeights().get(index) + 0.025d);
+
+                if (neuron.getOutputWeights().get(index) >= 1) {
+                    neuron.getOutputWeights().set(index, 0.999d);
+                }
             }
         }
     }

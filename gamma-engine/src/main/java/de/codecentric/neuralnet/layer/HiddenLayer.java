@@ -1,5 +1,6 @@
 package de.codecentric.neuralnet.layer;
 
+import de.codecentric.game.tictactoe.board.Player;
 import de.codecentric.neuralnet.neuron.HiddenNeuron;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class HiddenLayer extends AbstractLayer {
         hiddenNeurons = new ArrayList<>();
         for (int i = 0; i < getNeuronNum(); i++) {
             HiddenNeuron n = new HiddenNeuron();
-            n.initialize(i,9, 1);
+            n.initialize(i,27, 1);
             hiddenNeurons.add(n);
         }
     }
@@ -24,41 +25,49 @@ public class HiddenLayer extends AbstractLayer {
         return hiddenNeurons.get(num);
     }
 
-    public void fire(InputLayer inputLayer) {
+    public void fire(InputLayer inputLayer, Player player) {
 
         for (int i = 0; i < getNeuronNum(); i++) {
-            hiddenNeurons.get(i).fire(inputLayer.getFields(), inputLayer.getOutputWeigths(i));
+            hiddenNeurons.get(i).fire(inputLayer.getFields(), inputLayer.getOutputWeigths(i), player);
         }
     }
-
 
     public List<Double> getOutputWeigths(int num) {
 
         List<Double> weights = new ArrayList<>();
         for (int i = 0; i < getNeuronNum(); i++) {
-            weights.add(hiddenNeurons.get(i).getWeightOutList().get(num));
+            weights.add(hiddenNeurons.get(i).getOutputWeights().get(num));
         }
 
         return weights;
     }
 
-    public List<Integer> getCandidateMoves() {
+    public List<Boolean> candidateMoves() {
 
-        List<Integer> candidateMoves = new ArrayList<>();
-
+        List<Boolean> candidateMoves = new ArrayList<>();
         for (int i = 0; i < getNeuronNum(); i++) {
-            candidateMoves.add(hiddenNeurons.get(i).getCandidateMove());
+            candidateMoves.add(hiddenNeurons.get(i).isCandidateMove());
         }
 
         return candidateMoves;
     }
 
+    public List<Double> positionValues() {
+
+        List<Double> positionValues = new ArrayList<>();
+        for (int i = 0; i < getNeuronNum(); i++) {
+            positionValues.add(hiddenNeurons.get(i).getPositionValue());
+        }
+
+        return positionValues;
+    }
+
     public void reward(int index) {
         HiddenNeuron neuron = getNeuron(index);
-        neuron.getWeightOutList().set(0, neuron.getWeightOutList().get(0) + 0.05d);
+        neuron.getOutputWeights().set(0, neuron.getOutputWeights().get(0) + 0.05d);
 
-        if (neuron.getWeightOutList().get(0) >= 1) {
-            neuron.getWeightOutList().set(0, 0.999d);
+        if (neuron.getOutputWeights().get(0) >= 1) {
+            neuron.getOutputWeights().set(0, 0.999d);
         }
 
     }

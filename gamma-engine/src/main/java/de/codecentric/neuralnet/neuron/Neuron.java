@@ -5,60 +5,68 @@ import java.util.List;
 
 public class Neuron {
 
-    private List<Double> weightInList;
+    private List<Double> inputWeights;
 
-    private List<Double> weightOutList;
+    private List<Double> outputWeights;
 
-    private int weightInNum;
+    private int numberOfInputWeights;
 
-    private int weightOutNum;
+    private int numberOfOutputWeights;
 
     private int number;
 
-    public void initialize(int number, int weightInNum, int weightOutNum) {
+    public void initialize(int number, int numberOfInputWeights, int numberOfOutputWeights) {
         this.number = number;
-        this.weightInNum = weightInNum;
-        this.weightOutNum = weightOutNum;
+        this.numberOfInputWeights = numberOfInputWeights;
+        this.numberOfOutputWeights = numberOfOutputWeights;
 
-        weightInList = new ArrayList<>();
-        for (int i = 0; i < weightInNum; i++) {
-            weightInList.add(initialWeight());
+        inputWeights = new ArrayList<>();
+        for (int i = 0; i < numberOfInputWeights; i++) {
+            inputWeights.add(initialWeight());
         }
 
-        weightOutList = new ArrayList<>();
-        for (int o = 0; o < weightOutNum; o++) {
-            weightOutList.add(initialWeight());
+        outputWeights = new ArrayList<>();
+        for (int o = 0; o < numberOfOutputWeights; o++) {
+            outputWeights.add(initialWeight());
         }
     }
 
     public void print() {
         System.out.print("Input weights for neuron " + number + ": ");
-        for (int i = 0; i < weightInNum; i++) {
-            System.out.print("[" + weightInList.get(i) + "] ");
+        for (int i = 0; i < numberOfInputWeights; i++) {
+            System.out.print("[" + inputWeights.get(i) + "] ");
         }
         System.out.println();
 
         System.out.print("Output weights for neuron " + number + ": ");
-        for (int i = 0; i < weightOutNum; i++) {
-            System.out.print("[" + weightOutList.get(i) + "] ");
+        for (int i = 0; i < numberOfOutputWeights; i++) {
+            System.out.print("[" + outputWeights.get(i) + "] ");
         }
         System.out.println();
     }
 
-    public List<Double> getWeightInList() {
-        return weightInList;
+    public List<Double> getInputWeights() {
+        return inputWeights;
     }
 
-    public void setWeightInList(List<Double> weightInList) {
-        this.weightInList = weightInList;
+    public void setInputWeights(List<Double> inputWeights) {
+        this.inputWeights = inputWeights;
     }
 
-    public List<Double> getWeightOutList() {
-        return weightOutList;
+    public List<Double> getOutputWeights() {
+        return outputWeights;
     }
 
-    public void setWeightOutList(List<Double> weightOutList) {
-        this.weightOutList = weightOutList;
+    public void setOutputWeights(List<Double> outputWeights) {
+        this.outputWeights = outputWeights;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     private double initialWeight() {

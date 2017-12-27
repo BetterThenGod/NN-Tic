@@ -48,22 +48,21 @@ public class Training {
         Player gammaPlayer = Player.X;
         Player opponentPlayer = Player.O;
 
-        for (int i = 0; i < trainingRuns; i++) {
-            if (trainingOpponent.equals("random")) {
-                autoPlay.play(gammaEngine, randomeEngine, gammaPlayer, opponentPlayer, true);
-            } else if (trainingOpponent.equals("gamma")) {
-                autoPlay.play(gammaEngine, gammaEngine, gammaPlayer, opponentPlayer, true);
-            } else {
-                throw new RuntimeException("Unknown engine defined for training.opponent");
-            }
-            togglePlayer();
-        }
-
         TimeSeries overallSeries = new TimeSeries();
 
         for (int j = 0; j < autoplayMatches; j++) {
 
-            Board board = new Board();
+            gammaEngine.initialize();
+            for (int i = 0; i < trainingRuns; i++) {
+                if (trainingOpponent.equals("random")) {
+                    autoPlay.play(gammaEngine, randomeEngine, gammaPlayer, opponentPlayer, true);
+                } else if (trainingOpponent.equals("gamma")) {
+                    autoPlay.play(gammaEngine, gammaEngine, gammaPlayer, opponentPlayer, true);
+                } else {
+                    throw new RuntimeException("Unknown engine defined for training.opponent");
+                }
+                togglePlayer();
+            }
 
             int gammaWins = 0;
             int opponentWins = 0;

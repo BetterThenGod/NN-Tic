@@ -17,7 +17,6 @@ public class GammaEngine implements Engine {
     @Value("${learning.stage}")
     private int learningStage;
 
-
     private InputLayer inputLayer;
 
     private HiddenLayer hiddenLayer;
@@ -29,7 +28,7 @@ public class GammaEngine implements Engine {
     public void initialize() {
 
         inputLayer = new InputLayer();
-        inputLayer.initialize(9);
+        inputLayer.initialize(27);
 
         hiddenLayer = new HiddenLayer();
         hiddenLayer.initialize(9);
@@ -39,16 +38,16 @@ public class GammaEngine implements Engine {
     }
 
     @Override
-    public int makeMove(Board board, Player owner, boolean trainingEnabled) {
+    public int makeMove(Board board, Player player, boolean trainingEnabled) {
 
         inputLayer.fire(board);
-        hiddenLayer.fire(inputLayer);
+        hiddenLayer.fire(inputLayer, player);
         int move = outputLayer.fire(hiddenLayer);
 
-        board.move(move, owner);
+        board.move(move, player);
 
         if (trainingEnabled) {
-            if (board.isWon(owner)) {
+            if (board.isWon(player)) {
                 if (learningStage >= 1) {
                     hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
                     inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());

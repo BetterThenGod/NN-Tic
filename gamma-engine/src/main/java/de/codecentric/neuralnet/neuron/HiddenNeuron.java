@@ -6,53 +6,47 @@ import de.codecentric.game.tictactoe.board.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class HiddenNeuron extends Neuron {
 
-    int candidateMove;
+    private boolean isCandidateMove;
 
-    public void fire(List<Field> fields, List<Double> inputWeights) {
+    private double positionValue;
 
-        setWeightInList(inputWeights);
+    public void fire(List<Field> fields, List<Double> inputWeights, Player player) {
 
-        List<Integer> possibleMoves = new ArrayList<>();
-        for (int i = 0; i < fields.size(); i++) {
-            if (fields.get(i).getOwner() == Player.NONE) {
-                possibleMoves.add(i);
-            }
+        setInputWeights(inputWeights);
+
+        int relevantFieldNum = getNumber() * 3;
+        if (fields.get(relevantFieldNum).getOwner() == Player.NONE) {
+            isCandidateMove = true;
+        } else {
+            isCandidateMove = false;
         }
 
-        candidateMove = possibleMoves.get(0);
-        for (int i = 1; i < possibleMoves.size(); i++) {
-            if (inputWeights.get(possibleMoves.get(i)) / boardValue(fields) >
-                    inputWeights.get(candidateMove) / boardValue(fields)) {
-                candidateMove = possibleMoves.get(i);
-            }
-        }
-
-        candidateMove += 1;
-    }
-
-    public int getCandidateMove() {
-        return candidateMove;
-    }
-
-    private double boardValue(List<Field> fields) {
-
-        double blueValue = 0;
-        double redValue = 0;
-        double noneValue = 0;
-
-        for (Field f : fields) {
-            if (f.getOwner() == Player.O) {
-                blueValue += f.getValue();
-            } else if (f.getOwner() == Player.X) {
-                redValue += f.getValue();
+        double sumOfInputWeights = 0d;
+        int inputNum = 0;
+        for (int i = 1; i <= 9; i++) {
+            if (fields.get(inputNum).getOwner() == Player.NONE) {
+                sumOfInputWeights += inputWeights.get(inputNum);
+                inputNum += 3;
+            } else if (fields.get(inputNum).getOwner() == player) {
+                sumOfInputWeights += inputWeights.get(inputNum+1);
+                inputNum += 3;
             } else {
-                noneValue += f.getValue();
+                sumOfInputWeights += inputWeights.get(inputNum+2);
+                inputNum += 3;
             }
         }
 
-        double value = (1 / (1-blueValue)) * (1 / (1-redValue)) + (1 / 1- Math.exp(noneValue));
-        return value;
+        positionValue = 1 / 1 - Math.exp(sumOfInputWeights * (-1));
+    }
+
+    public boolean isCandidateMove() {
+        return isCandidateMove;
+    }
+
+    public double getPositionValue() {
+        return positionValue;
     }
 }

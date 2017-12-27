@@ -27,6 +27,7 @@ public class OutputLayer extends AbstractLayer {
     }
 
     public int fire(HiddenLayer hiddenLayer) {
-        return outputNeurons.get(0).fire(hiddenLayer.getCandidateMoves(), hiddenLayer.getOutputWeigths(0));
+        return outputNeurons.get(0).fire(hiddenLayer.candidateMoves(), hiddenLayer.positionValues(),
+                hiddenLayer.getOutputWeigths(0));
     }
 }

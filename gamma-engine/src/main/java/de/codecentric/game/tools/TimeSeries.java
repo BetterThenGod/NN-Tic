@@ -28,7 +28,7 @@ public class TimeSeries {
             int i = 1;
             writer.write("Games:,");
             for (Integer n : gammaTimeSeries) {
-                writer.write("G" + i++ + ",");
+                writer.write("M" + i++ + ",");
             }
             writer.newLine();
 
