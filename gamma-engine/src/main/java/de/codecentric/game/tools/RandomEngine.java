@@ -1,8 +1,8 @@
 package de.codecentric.game.tools;
 
 import de.codecentric.game.playing.Engine;
-import de.codecentric.game.tictactoe.board.Board;
-import de.codecentric.game.tictactoe.board.Player;
+import de.codecentric.game.tictactoe.game.Board;
+import de.codecentric.game.tictactoe.game.Player;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,5 +18,10 @@ public class RandomEngine implements Engine {
         int randomNum = ThreadLocalRandom.current().nextInt(0, validMoves.size());
 
         return validMoves.get(randomNum);
+    }
+
+    @Override
+    public void newGame() {
+        // Do nothing
     }
 }

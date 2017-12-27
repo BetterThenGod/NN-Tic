@@ -1,6 +1,6 @@
 package de.codecentric.neuralnet.layer;
 
-import de.codecentric.game.tictactoe.board.Player;
+import de.codecentric.game.tictactoe.game.Player;
 import de.codecentric.neuralnet.neuron.HiddenNeuron;
 
 import java.util.ArrayList;
@@ -62,9 +62,9 @@ public class HiddenLayer extends AbstractLayer {
         return positionValues;
     }
 
-    public void reward(int index) {
+    public void reward(int index, double value) {
         HiddenNeuron neuron = getNeuron(index);
-        neuron.getOutputWeights().set(0, neuron.getOutputWeights().get(0) + 0.05d);
+        neuron.getOutputWeights().set(0, neuron.getOutputWeights().get(0) + value);
 
         if (neuron.getOutputWeights().get(0) >= 1) {
             neuron.getOutputWeights().set(0, 0.999d);

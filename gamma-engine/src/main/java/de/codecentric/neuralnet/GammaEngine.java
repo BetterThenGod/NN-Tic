@@ -1,20 +1,14 @@
 package de.codecentric.neuralnet;
 
 import de.codecentric.game.playing.Engine;
-import de.codecentric.game.tictactoe.board.Board;
-import de.codecentric.game.tictactoe.board.Player;
+import de.codecentric.game.tictactoe.game.Board;
+import de.codecentric.game.tictactoe.game.Player;
 import de.codecentric.neuralnet.layer.HiddenLayer;
 import de.codecentric.neuralnet.layer.InputLayer;
 import de.codecentric.neuralnet.layer.OutputLayer;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
-@Component
 public class GammaEngine implements Engine {
 
-    @Value("${learning.stage}")
     private int learningStage;
 
     private InputLayer inputLayer;
@@ -23,8 +17,11 @@ public class GammaEngine implements Engine {
 
     private OutputLayer outputLayer;
 
+    public GammaEngine(int learningStage) {
+        this.learningStage = learningStage;
+        this.initialize();
+    }
 
-    @PostConstruct
     public void initialize() {
 
         inputLayer = new InputLayer();
@@ -49,13 +46,25 @@ public class GammaEngine implements Engine {
         if (trainingEnabled) {
             if (board.isWon(player)) {
                 if (learningStage >= 1) {
-                    hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
-                    inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex());
+                    hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex(), 0.05d);
+                    inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex(), 0.075d,
+                            hiddenLayer.getNeuron(outputLayer.getNeuron(0).getLastMoveIndex()).getLastUsedInputNeurons());
+
+                    hiddenLayer.reward(outputLayer.getNeuron(0).getFirstMoveIndex(), 0.05d);
+                    inputLayer.reward(outputLayer.getNeuron(0).getFirstMoveIndex(), 0.075d,
+                            hiddenLayer.getNeuron(outputLayer.getNeuron(0).getLastMoveIndex()).getFirstUsedInputNeurons());
                 }
             }
         }
 
         return move;
+    }
+
+    @Override
+    public void newGame() {
+        for (int i = 0; i < hiddenLayer.getNeuronNum(); i++) {
+            hiddenLayer.getNeuron(i).resetUsedInputNeurons();
+        }
     }
 
     public void print() {

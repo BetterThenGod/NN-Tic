@@ -1,13 +1,16 @@
 package de.codecentric.game.playing;
 
-import de.codecentric.game.tictactoe.board.Board;
-import de.codecentric.game.tictactoe.board.Player;
+import de.codecentric.game.tictactoe.game.Board;
+import de.codecentric.game.tictactoe.game.Player;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AutoPlay {
 
     public GameResult play(Engine engine, Engine opponent, Player enginePlayer, Player opponentPlayer, boolean trainingEnabled) {
+
+        engine.newGame();
+        opponent.newGame();
 
         GameResult gameResult = null;
         int moveNum = 0;

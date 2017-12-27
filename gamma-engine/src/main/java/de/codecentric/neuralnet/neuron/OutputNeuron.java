@@ -4,6 +4,7 @@ import java.util.List;
 
 public class OutputNeuron extends Neuron {
 
+    private int firstMoveIndex = -1;
 
     private int lastMoveIndex;
 
@@ -11,7 +12,7 @@ public class OutputNeuron extends Neuron {
 
         setInputWeights(inputWeights);
 
-        lastMoveIndex = 0;
+        int moveIndex = 0;
         double lastValue = 0d;
 
         for (int i = 0; i < candidateMoves.size(); i++) {
@@ -19,10 +20,15 @@ public class OutputNeuron extends Neuron {
             if (candidateMoves.get(i) == true) {
                 double value = 1 / 1 - Math.exp(positionValues.get(i) * inputWeights.get(i) * -1);
                 if (value > lastValue) {
-                    lastMoveIndex = i;
+                    moveIndex = i;
                     lastValue = value;
                 }
             }
+        }
+
+        lastMoveIndex = moveIndex;
+        if (firstMoveIndex == -1) {
+            firstMoveIndex = moveIndex;
         }
 
         return lastMoveIndex+1;
@@ -30,5 +36,9 @@ public class OutputNeuron extends Neuron {
 
     public int getLastMoveIndex() {
         return lastMoveIndex;
+    }
+
+    public int getFirstMoveIndex() {
+        return firstMoveIndex;
     }
 }

@@ -1,6 +1,6 @@
 package de.codecentric.neuralnet.neuron;
 
-import de.codecentric.game.tictactoe.board.Field;
+import de.codecentric.game.tictactoe.game.Field;
 
 
 public class InputNeuron extends Neuron {

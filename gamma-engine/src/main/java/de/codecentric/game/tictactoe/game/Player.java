@@ -1,4 +1,4 @@
-package de.codecentric.game.tictactoe.board;
+package de.codecentric.game.tictactoe.game;
 
 public enum Player {
 

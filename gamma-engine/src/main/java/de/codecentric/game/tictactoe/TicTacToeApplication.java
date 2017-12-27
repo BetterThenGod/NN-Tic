@@ -1,10 +1,12 @@
 package de.codecentric.game.tictactoe;
 
-import de.codecentric.game.tictactoe.board.Board;
-import de.codecentric.game.tictactoe.board.Player;
+import de.codecentric.game.tictactoe.game.Board;
+import de.codecentric.game.tictactoe.game.Player;
+import de.codecentric.game.tools.SelfPlay;
 import de.codecentric.neuralnet.GammaEngine;
 import de.codecentric.neuralnet.Training;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,10 +19,13 @@ import java.util.Scanner;
 public class TicTacToeApplication implements CommandLineRunner {
 
     @Autowired
-    private GammaEngine gammaEngine;
+    private SelfPlay selfPlay;
 
     @Autowired
     private Training training;
+
+    @Value("${learning.stage}")
+    private int learningStage;
 
     public static void main(String[] args) {
 		SpringApplication.run(TicTacToeApplication.class, args);
@@ -28,12 +33,15 @@ public class TicTacToeApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        training.start();
+        selfPlay.play();
 	    play();
     }
 
 
     public void play() {
+
+        GammaEngine gammaEngine = new GammaEngine(learningStage);
+        training.train(gammaEngine);
 
 	    Board board = new Board();
 
@@ -56,6 +64,8 @@ public class TicTacToeApplication implements CommandLineRunner {
                     checkWon(board, Player.X, "Computer isWon!");
 
                     System.out.println("");
+                } else {
+                    gammaEngine.newGame();
                 }
             } else {
                 System.out.println("INVALID MOVE!");
@@ -69,6 +79,7 @@ public class TicTacToeApplication implements CommandLineRunner {
             board.printToScreen();
             System.out.println(message);
             board.initialize();
+
             return true;
         }
 
@@ -80,6 +91,7 @@ public class TicTacToeApplication implements CommandLineRunner {
             board.printToScreen();
             System.out.println("Draw!");
             board.initialize();
+
             return true;
         }
 

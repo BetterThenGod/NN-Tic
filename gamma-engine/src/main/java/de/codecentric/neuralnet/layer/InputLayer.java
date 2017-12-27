@@ -1,7 +1,7 @@
 package de.codecentric.neuralnet.layer;
 
-import de.codecentric.game.tictactoe.board.Board;
-import de.codecentric.game.tictactoe.board.Field;
+import de.codecentric.game.tictactoe.game.Board;
+import de.codecentric.game.tictactoe.game.Field;
 import de.codecentric.neuralnet.neuron.InputNeuron;
 
 import java.util.ArrayList;
@@ -59,19 +59,25 @@ public class InputLayer extends AbstractLayer {
         return fields;
     }
 
-    public void reward(int index) {
+    public void reward(int index, double value, List<Integer> listOfInputNeuronIndexes) {
+
+        for (Integer i : listOfInputNeuronIndexes) {
+            inputNeurons.get(i).getOutputWeights().set(index, inputNeurons.get(i).getOutputWeights().get(index) + 0.01d);
+        }
 
         int inputNumIndex = index * 3;
         for (int i = 0; i < getNeuronNum(); i++) {
-
             if (i == inputNumIndex) {
                 InputNeuron neuron = inputNeurons.get(i);
-                neuron.getOutputWeights().set(index, neuron.getOutputWeights().get(index) + 0.025d);
+                neuron.getOutputWeights().set(index, neuron.getOutputWeights().get(index) + value);
 
                 if (neuron.getOutputWeights().get(index) >= 1) {
                     neuron.getOutputWeights().set(index, 0.999d);
                 }
             }
         }
+
+
+
     }
 }

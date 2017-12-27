@@ -1,4 +1,4 @@
-package de.codecentric.game.tictactoe.board;
+package de.codecentric.game.tictactoe.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +73,7 @@ public class Board {
     }
 
 
-    public boolean isWon(Player o) {
+    public boolean isWon(Player player) {
 
         boolean won = false;
 
@@ -81,7 +81,7 @@ public class Board {
         for (int row = 1; row <= ROW_DIMENSION; row++) {
             int count = 0;
             for (int col = 1; col <= COL_DIMENSION; col++) {
-                if (playingBoard.get(number(row, col)).getOwner() == o) {
+                if (playingBoard.get(number(row, col)).getOwner() == player) {
                     count++;
                 } else {
                     break;
@@ -96,7 +96,7 @@ public class Board {
         for (int col = 1; col <= COL_DIMENSION; col++) {
             int count = 0;
             for (int row = 1; row <= ROW_DIMENSION; row++) {
-                if (playingBoard.get(number(row, col)).getOwner() == o) {
+                if (playingBoard.get(number(row, col)).getOwner() == player) {
                     count++;
                 } else {
                     break;
@@ -109,29 +109,30 @@ public class Board {
 
         // Check three diagonal left top to right bottom
         int diagonal = 0;
-        for (int x = 1; x <= ROW_DIMENSION; x++) {
-
-            if (playingBoard.get(number(x, x)).getOwner() == o) {
-                diagonal++;
-            } else {
-                break;
-            }
+        if (playingBoard.get(number(1, 1)).getOwner() == player) {
+            diagonal++;
+        }
+        if (playingBoard.get(number(2, 2)).getOwner() == player) {
+            diagonal++;
+        }
+        if (playingBoard.get(number(3, 3)).getOwner() == player) {
+            diagonal++;
         }
 
         if (diagonal == COL_DIMENSION) {
             won = true;
         }
 
-
         // Check three diagonal left bottom to right top
         diagonal = 0;
-        for (int x = ROW_DIMENSION; x > 0; x--) {
-
-            if (playingBoard.get(number(x, x)).getOwner() == o) {
-                diagonal++;
-            } else {
-                break;
-            }
+        if (playingBoard.get(number(1, 3)).getOwner() == player) {
+            diagonal++;
+        }
+        if (playingBoard.get(number(2, 2)).getOwner() == player) {
+            diagonal++;
+        }
+        if (playingBoard.get(number(3, 1)).getOwner() == player) {
+            diagonal++;
         }
 
         if (diagonal == COL_DIMENSION) {
