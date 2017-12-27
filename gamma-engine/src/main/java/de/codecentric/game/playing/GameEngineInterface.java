@@ -7,6 +7,6 @@ public interface GameEngineInterface {
 
     int makeMove(Board board, PlayerEnum forPlayer, boolean trainingEnables);
 
-    void newGame();
+    void resetBetweenGames();
 
 }

@@ -61,10 +61,15 @@ public class GammaEngine implements GameEngineInterface {
     }
 
     @Override
-    public void newGame() {
+    public void resetBetweenGames() {
         for (int i = 0; i < hiddenLayer.getNumberOfNeurons(); i++) {
-            hiddenLayer.getNeuron(i).resetUsedInputNeurons();
+            hiddenLayer.getNeuron(i).resetBetweenGames();
         }
+
+        for (int i = 0; i < outputLayer.getNumberOfNeurons(); i++) {
+            outputLayer.getNeuron(i).resetBetweenGames();
+        }
+
     }
 
     public void print() {

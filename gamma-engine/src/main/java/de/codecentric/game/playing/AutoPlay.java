@@ -9,8 +9,8 @@ public class AutoPlay {
 
     public GameResultEnum play(GameEngineInterface engine, GameEngineInterface opponent, PlayerEnum enginePlayer, PlayerEnum opponentPlayer, boolean trainingEnabled) {
 
-        engine.newGame();
-        opponent.newGame();
+        engine.resetBetweenGames();
+        opponent.resetBetweenGames();
 
         Board board = new Board();
         GameResultEnum gameResult = null;

@@ -36,6 +36,10 @@ public class HiddenNeuron extends Neuron {
         }
         lastUsedInputNeurons.clear();
 
+        //
+        // Using different input weights and different field values depending on the fact if a field is
+        // empty, already owned or owned by the opponent.
+        //
         double sumOfInputWeights = 0d;
         int inputNum = 0;
         for (int i = 1; i <= 9; i++) {
@@ -82,7 +86,7 @@ public class HiddenNeuron extends Neuron {
         return lastUsedInputNeurons;
     }
 
-    public void resetUsedInputNeurons() {
+    public void resetBetweenGames() {
         firstUsedInputNeurons = null;
         lastUsedInputNeurons.clear();
     }

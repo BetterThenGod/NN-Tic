@@ -46,7 +46,7 @@ public class HumanPlay {
 
                     System.out.println("");
                 } else {
-                    gammaEngine.newGame();
+                    gammaEngine.resetBetweenGames();
                 }
             } else {
                 System.out.println("INVALID MOVE!");
@@ -78,5 +78,4 @@ public class HumanPlay {
 
         return false;
     }
-
 }

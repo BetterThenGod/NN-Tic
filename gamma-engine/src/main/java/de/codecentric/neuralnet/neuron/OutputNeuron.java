@@ -42,4 +42,8 @@ public class OutputNeuron extends Neuron {
     public int getFirstMoveIndex() {
         return firstMoveIndex;
     }
+
+    public void resetBetweenGames() {
+        firstMoveIndex = -1;
+    }
 }

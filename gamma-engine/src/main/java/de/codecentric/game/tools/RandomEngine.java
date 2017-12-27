@@ -21,7 +21,7 @@ public class RandomEngine implements GameEngineInterface {
     }
 
     @Override
-    public void newGame() {
+    public void resetBetweenGames() {
         // Do nothing
     }
 }
