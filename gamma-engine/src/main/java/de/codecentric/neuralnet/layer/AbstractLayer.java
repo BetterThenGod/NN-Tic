@@ -4,19 +4,19 @@ import de.codecentric.neuralnet.neuron.Neuron;
 
 public abstract class AbstractLayer {
 
-    private int neuronNum;
+    private int numberOfNeurons;
 
-    public void initialize(int neuronNum) {
-        this.neuronNum = neuronNum;
+    public void initialize(int numberOfNeurons) {
+        this.numberOfNeurons = numberOfNeurons;
         subInitialize();
     }
 
-    public int getNeuronNum() {
-        return neuronNum;
+    public int getNumberOfNeurons() {
+        return numberOfNeurons;
     }
 
     public void print() {
-        for (int i = 0; i < getNeuronNum(); i++) {
+        for (int i = 0; i < getNumberOfNeurons(); i++) {
             getNeuron(i).print();
         }
     }

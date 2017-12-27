@@ -1,13 +1,13 @@
 package de.codecentric.neuralnet;
 
-import de.codecentric.game.playing.Engine;
+import de.codecentric.game.playing.GameEngineInterface;
 import de.codecentric.game.tictactoe.game.Board;
-import de.codecentric.game.tictactoe.game.Player;
+import de.codecentric.game.tictactoe.game.PlayerEnum;
 import de.codecentric.neuralnet.layer.HiddenLayer;
 import de.codecentric.neuralnet.layer.InputLayer;
 import de.codecentric.neuralnet.layer.OutputLayer;
 
-public class GammaEngine implements Engine {
+public class GammaEngine implements GameEngineInterface {
 
     private int learningStage;
 
@@ -19,7 +19,7 @@ public class GammaEngine implements Engine {
 
     public GammaEngine(int learningStage) {
         this.learningStage = learningStage;
-        this.initialize();
+        initialize();
     }
 
     public void initialize() {
@@ -35,16 +35,16 @@ public class GammaEngine implements Engine {
     }
 
     @Override
-    public int makeMove(Board board, Player player, boolean trainingEnabled) {
+    public int makeMove(Board board, PlayerEnum forPlayer, boolean trainingEnabled) {
 
         inputLayer.fire(board);
-        hiddenLayer.fire(inputLayer, player);
+        hiddenLayer.fire(inputLayer, forPlayer);
         int move = outputLayer.fire(hiddenLayer);
 
-        board.move(move, player);
+        board.move(move, forPlayer);
 
         if (trainingEnabled) {
-            if (board.isWon(player)) {
+            if (board.isWon(forPlayer)) {
                 if (learningStage >= 1) {
                     hiddenLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex(), 0.05d);
                     inputLayer.reward(outputLayer.getNeuron(0).getLastMoveIndex(), 0.075d,
@@ -62,7 +62,7 @@ public class GammaEngine implements Engine {
 
     @Override
     public void newGame() {
-        for (int i = 0; i < hiddenLayer.getNeuronNum(); i++) {
+        for (int i = 0; i < hiddenLayer.getNumberOfNeurons(); i++) {
             hiddenLayer.getNeuron(i).resetUsedInputNeurons();
         }
     }

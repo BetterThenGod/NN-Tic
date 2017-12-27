@@ -1,7 +1,7 @@
 package de.codecentric.game.tools;
 
 import de.codecentric.game.playing.AutoPlay;
-import de.codecentric.game.playing.GameResult;
+import de.codecentric.game.playing.GameResultEnum;
 import de.codecentric.neuralnet.GammaEngine;
 import de.codecentric.neuralnet.Training;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +20,19 @@ public class SelfPlay {
     @Autowired
     private Training training;
 
-    @Value("${autoplay.games}")
-    private int autoplayGames;
+    @Value("${selfplay.games}")
+    private int selfplayGames;
 
-    @Value("${autoplay.matches}")
-    private int autoplayMatches;
+    @Value("${selfplay.matches}")
+    private int selfplayMatches;
 
     @Value("${learning.stage}")
     private int learningStage;
 
-
     public void play() {
 
         TimeSeries overallSeries = new TimeSeries();
-
-        for (int j = 0; j < autoplayMatches; j++) {
+        for (int j = 0; j < selfplayMatches; j++) {
 
             GammaEngine gammaEngine = new GammaEngine(learningStage);
             training.train(gammaEngine);
@@ -46,21 +44,20 @@ public class SelfPlay {
 
             PlayerToggle playerToggle = new PlayerToggle();
 
-            for (int i = 0; i < autoplayGames; i++) {
+            for (int i = 0; i < selfplayGames; i++) {
 
-                GameResult gameResult = autoPlay.play(gammaEngine, randomEngine,
+                GameResultEnum gameResult = autoPlay.play(gammaEngine, randomEngine,
                         playerToggle.getGammaPlayer(), playerToggle.getOpponentPlayer(), false);
 
-                if (gameResult == GameResult.DRAW) {
+                if (gameResult == GameResultEnum.DRAW) {
                     draws++;
-                } else if (gameResult == GameResult.ENGINE_WON) {
+                } else if (gameResult == GameResultEnum.ENGINE_WON) {
                     gammaWins++;
-                } else if (gameResult == GameResult.OPPONENT_WON) {
+                } else if (gameResult == GameResultEnum.OPPONENT_WON) {
                     opponentWins++;
                 }
 
                 timeSeries.add(gammaWins, opponentWins, draws);
-
                 playerToggle.toggle();
             }
 

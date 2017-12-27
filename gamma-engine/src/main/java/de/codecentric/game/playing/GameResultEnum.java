@@ -1,6 +1,6 @@
 package de.codecentric.game.playing;
 
-public enum GameResult {
+public enum GameResultEnum {
 
     ENGINE_WON,
 

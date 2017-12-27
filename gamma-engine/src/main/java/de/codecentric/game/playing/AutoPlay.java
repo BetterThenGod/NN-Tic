@@ -1,32 +1,33 @@
 package de.codecentric.game.playing;
 
 import de.codecentric.game.tictactoe.game.Board;
-import de.codecentric.game.tictactoe.game.Player;
+import de.codecentric.game.tictactoe.game.PlayerEnum;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AutoPlay {
 
-    public GameResult play(Engine engine, Engine opponent, Player enginePlayer, Player opponentPlayer, boolean trainingEnabled) {
+    public GameResultEnum play(GameEngineInterface engine, GameEngineInterface opponent, PlayerEnum enginePlayer, PlayerEnum opponentPlayer, boolean trainingEnabled) {
 
         engine.newGame();
         opponent.newGame();
 
-        GameResult gameResult = null;
+        Board board = new Board();
+        GameResultEnum gameResult = null;
         int moveNum = 0;
 
-        Board board = new Board();
+
         while (gameResult == null) {
 
             moveNum++;
-            if (moveNum > 1 || enginePlayer == Player.X) {
+            if (moveNum > 1 || enginePlayer == PlayerEnum.X) {
                 int engineMove = engine.makeMove(board.copy(), enginePlayer, trainingEnabled);
                 board.move(engineMove, enginePlayer);
                 if (board.gameEnded()) {
                     if (board.isWon(enginePlayer)) {
-                        gameResult = GameResult.ENGINE_WON;
+                        gameResult = GameResultEnum.ENGINE_WON;
                     } else {
-                        gameResult = GameResult.DRAW;
+                        gameResult = GameResultEnum.DRAW;
                     }
                 }
             }
@@ -36,9 +37,9 @@ public class AutoPlay {
                 board.move(opponentMove, opponentPlayer);
                 if (board.gameEnded()) {
                     if (board.isWon(opponentPlayer)) {
-                        gameResult = GameResult.OPPONENT_WON;
+                        gameResult = GameResultEnum.OPPONENT_WON;
                     } else {
-                        gameResult = GameResult.DRAW;
+                        gameResult = GameResultEnum.DRAW;
                     }
                 }
             }

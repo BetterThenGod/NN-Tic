@@ -19,6 +19,7 @@ public class OutputNeuron extends Neuron {
 
             if (candidateMoves.get(i) == true) {
                 double value = 1 / 1 - Math.exp(positionValues.get(i) * inputWeights.get(i) * -1);
+
                 if (value > lastValue) {
                     moveIndex = i;
                     lastValue = value;

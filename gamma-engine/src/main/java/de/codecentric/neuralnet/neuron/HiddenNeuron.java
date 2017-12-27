@@ -1,7 +1,7 @@
 package de.codecentric.neuralnet.neuron;
 
 import de.codecentric.game.tictactoe.game.Field;
-import de.codecentric.game.tictactoe.game.Player;
+import de.codecentric.game.tictactoe.game.PlayerEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,13 @@ public class HiddenNeuron extends Neuron {
 
     private List<Integer> lastUsedInputNeurons = new ArrayList<>();
 
-    public void fire(List<Field> fields, List<Double> inputWeights, Player player) {
+    public void fire(List<Field> fields, List<Double> inputWeights, PlayerEnum forPlayer) {
 
         setInputWeights(inputWeights);
 
         int relevantFieldNum = getNumber() * 3;
-        if (fields.get(relevantFieldNum).getOwner() == Player.NONE) {
+
+        if (fields.get(relevantFieldNum).getOwner() == PlayerEnum.NONE) {
             isCandidateMove = true;
         } else {
             isCandidateMove = false;
@@ -38,22 +39,22 @@ public class HiddenNeuron extends Neuron {
         double sumOfInputWeights = 0d;
         int inputNum = 0;
         for (int i = 1; i <= 9; i++) {
-            if (fields.get(inputNum).getOwner() == Player.NONE) {
-                sumOfInputWeights += inputWeights.get(inputNum);
+            if (fields.get(inputNum).getOwner() == PlayerEnum.NONE) {
+                sumOfInputWeights += (inputWeights.get(inputNum) * fields.get(inputNum).getValue());
                 if (isFirstMove) {
                     firstUsedInputNeurons.add(inputNum);
                 }
                 lastUsedInputNeurons.add(inputNum);
                 inputNum += 3;
-            } else if (fields.get(inputNum + 1).getOwner() == player) {
-                sumOfInputWeights += inputWeights.get(inputNum + 1);
+            } else if (fields.get(inputNum + 1).getOwner() == forPlayer) {
+                sumOfInputWeights += (inputWeights.get(inputNum + 1) * (fields.get(inputNum + 1).getValue() / 2));
                 if (isFirstMove) {
                     firstUsedInputNeurons.add(inputNum + 1);
                 }
                 lastUsedInputNeurons.add(inputNum + 1);
                 inputNum += 3;
             } else {
-                sumOfInputWeights += inputWeights.get(inputNum + 2);
+                sumOfInputWeights += (inputWeights.get(inputNum + 2) * (fields.get(inputNum + 2).getValue() / 4));
                 if (isFirstMove) {
                     firstUsedInputNeurons.add(inputNum + 2);
                 }

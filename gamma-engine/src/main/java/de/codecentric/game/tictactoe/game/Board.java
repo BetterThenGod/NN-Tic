@@ -20,13 +20,17 @@ public class Board {
     public void initialize() {
         for (int row = 1; row <= ROW_DIMENSION; row++) {
             for (int col = 1; col <= COL_DIMENSION; col++) {
-                Field f = new Field(number(row, col));
-                playingBoard.put(number(row, col), f);
+                Field field = new Field(number(row, col));
+                playingBoard.put(number(row, col), field);
             }
         }
     }
 
-    public void move(int number, Player owner) {
+    public void move(int number, PlayerEnum owner) {
+        if (playingBoard.get(number).getOwner() != PlayerEnum.NONE) {
+            throw new RuntimeException("Illegal move, field already occupied: " + number);
+        }
+
         Field f = playingBoard.get(number);
         f.setOwner(owner);
     }
@@ -65,7 +69,7 @@ public class Board {
 
         if (n > ROW_DIMENSION * COL_DIMENSION) {
             return false;
-        } else if (playingBoard.get(n).getOwner() == Player.NONE) {
+        } else if (playingBoard.get(n).getOwner() == PlayerEnum.NONE) {
             return true;
         } else {
             return false;
@@ -73,7 +77,7 @@ public class Board {
     }
 
 
-    public boolean isWon(Player player) {
+    public boolean isWon(PlayerEnum player) {
 
         boolean won = false;
 
@@ -152,15 +156,15 @@ public class Board {
 
     public boolean gameEnded() {
 
-        if (isWon(Player.O)) {
+        if (isWon(PlayerEnum.O)) {
             printToScreen();
-            System.out.println("Game won by " + Player.O.getRepresentation() + "!");
+            System.out.println("Game won by " + PlayerEnum.O.getRepresentation() + "!");
             return true;
         }
 
-        if (isWon(Player.X)) {
+        if (isWon(PlayerEnum.X)) {
             printToScreen();
-            System.out.println("Game won by " + Player.X.getRepresentation() + "!");
+            System.out.println("Game won by " + PlayerEnum.X.getRepresentation() + "!");
             return true;
         }
 

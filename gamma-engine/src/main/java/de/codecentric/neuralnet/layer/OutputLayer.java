@@ -14,7 +14,7 @@ public class OutputLayer extends AbstractLayer {
     @Override
     public void subInitialize() {
         outputNeurons = new ArrayList<>();
-        for (int i = 0; i < getNeuronNum(); i++) {
+        for (int i = 0; i < getNumberOfNeurons(); i++) {
             OutputNeuron n = new OutputNeuron();
             n.initialize(i,9, 1);
             outputNeurons.add(n);

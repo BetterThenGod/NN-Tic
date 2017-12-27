@@ -12,7 +12,6 @@ public class TimeSeries {
     private List<Integer> randomTimeSeries = new ArrayList<>();
     private List<Integer> drawsTimeSeries = new ArrayList<>();
 
-
     public void add(int gammaWins, int randomWins, int draws) {
         gammaTimeSeries.add(gammaWins);
         randomTimeSeries.add(randomWins);

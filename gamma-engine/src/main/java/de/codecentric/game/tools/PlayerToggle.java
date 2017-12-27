@@ -1,28 +1,28 @@
 package de.codecentric.game.tools;
 
-import de.codecentric.game.tictactoe.game.Player;
+import de.codecentric.game.tictactoe.game.PlayerEnum;
 
 public class PlayerToggle {
 
-    private Player gammaPlayer = Player.X;
+    private PlayerEnum gammaPlayer = PlayerEnum.X;
 
-    private Player opponentPlayer = Player.O;
+    private PlayerEnum opponentPlayer = PlayerEnum.O;
 
-    public Player getGammaPlayer() {
+    public PlayerEnum getGammaPlayer() {
         return gammaPlayer;
     }
 
-    public Player getOpponentPlayer() {
+    public PlayerEnum getOpponentPlayer() {
         return opponentPlayer;
     }
 
     public void toggle() {
-        if (gammaPlayer == Player.X) {
-            gammaPlayer = Player.O;
-            opponentPlayer = Player.X;
+        if (gammaPlayer == PlayerEnum.X) {
+            gammaPlayer = PlayerEnum.O;
+            opponentPlayer = PlayerEnum.X;
         } else {
-            gammaPlayer = Player.X;
-            opponentPlayer = Player.O;
+            gammaPlayer = PlayerEnum.X;
+            opponentPlayer = PlayerEnum.O;
         }
     }
 }

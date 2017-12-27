@@ -1,6 +1,6 @@
 package de.codecentric.neuralnet.layer;
 
-import de.codecentric.game.tictactoe.game.Player;
+import de.codecentric.game.tictactoe.game.PlayerEnum;
 import de.codecentric.neuralnet.neuron.HiddenNeuron;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class HiddenLayer extends AbstractLayer {
     @Override
     public void subInitialize() {
         hiddenNeurons = new ArrayList<>();
-        for (int i = 0; i < getNeuronNum(); i++) {
+        for (int i = 0; i < getNumberOfNeurons(); i++) {
             HiddenNeuron n = new HiddenNeuron();
             n.initialize(i,27, 1);
             hiddenNeurons.add(n);
@@ -25,9 +25,9 @@ public class HiddenLayer extends AbstractLayer {
         return hiddenNeurons.get(num);
     }
 
-    public void fire(InputLayer inputLayer, Player player) {
+    public void fire(InputLayer inputLayer, PlayerEnum player) {
 
-        for (int i = 0; i < getNeuronNum(); i++) {
+        for (int i = 0; i < getNumberOfNeurons(); i++) {
             hiddenNeurons.get(i).fire(inputLayer.getFields(), inputLayer.getOutputWeigths(i), player);
         }
     }
@@ -35,7 +35,7 @@ public class HiddenLayer extends AbstractLayer {
     public List<Double> getOutputWeigths(int num) {
 
         List<Double> weights = new ArrayList<>();
-        for (int i = 0; i < getNeuronNum(); i++) {
+        for (int i = 0; i < getNumberOfNeurons(); i++) {
             weights.add(hiddenNeurons.get(i).getOutputWeights().get(num));
         }
 
@@ -45,7 +45,7 @@ public class HiddenLayer extends AbstractLayer {
     public List<Boolean> candidateMoves() {
 
         List<Boolean> candidateMoves = new ArrayList<>();
-        for (int i = 0; i < getNeuronNum(); i++) {
+        for (int i = 0; i < getNumberOfNeurons(); i++) {
             candidateMoves.add(hiddenNeurons.get(i).isCandidateMove());
         }
 
@@ -55,7 +55,7 @@ public class HiddenLayer extends AbstractLayer {
     public List<Double> positionValues() {
 
         List<Double> positionValues = new ArrayList<>();
-        for (int i = 0; i < getNeuronNum(); i++) {
+        for (int i = 0; i < getNumberOfNeurons(); i++) {
             positionValues.add(hiddenNeurons.get(i).getPositionValue());
         }
 

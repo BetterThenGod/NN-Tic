@@ -1,6 +1,6 @@
 package de.codecentric.game.tictactoe.game;
 
-public enum Player {
+public enum PlayerEnum {
 
     NONE("-"),
 
@@ -10,7 +10,7 @@ public enum Player {
 
     private String representation;
 
-    Player(String represnetation) {
+    PlayerEnum(String represnetation) {
         this.representation = represnetation;
     }
 
