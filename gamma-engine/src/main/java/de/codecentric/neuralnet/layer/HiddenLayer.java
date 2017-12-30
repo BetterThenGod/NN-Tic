@@ -28,7 +28,7 @@ public class HiddenLayer extends AbstractLayer {
     public void fire(InputLayer inputLayer, PlayerEnum player) {
 
         for (int i = 0; i < getNumberOfNeurons(); i++) {
-            hiddenNeurons.get(i).fire(inputLayer.getFields(), inputLayer.getOutputWeigths(i), player);
+            hiddenNeurons.get(i).activate(inputLayer.getFields(), inputLayer.getValues(), inputLayer.getOutputWeigths(i), player);
         }
     }
 

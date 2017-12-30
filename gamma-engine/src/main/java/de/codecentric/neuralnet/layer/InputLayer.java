@@ -30,11 +30,11 @@ public class InputLayer extends AbstractLayer {
             // Three neurons always representing the same field to differ between empty fields,
             // own fields and fields occupied by an opponent
             //
-            inputNeurons.get(neuronNum).fire(board.getField(i));
+            inputNeurons.get(neuronNum).activate(board.getField(i));
             neuronNum++;
-            inputNeurons.get(neuronNum).fire(board.getField(i));
+            inputNeurons.get(neuronNum).activate(board.getField(i));
             neuronNum++;
-            inputNeurons.get(neuronNum).fire(board.getField(i));
+            inputNeurons.get(neuronNum).activate(board.getField(i));
             neuronNum++;
         }
     }
@@ -61,6 +61,15 @@ public class InputLayer extends AbstractLayer {
         }
 
         return fields;
+    }
+
+    public List<Double> getValues() {
+        List<Double> values = new ArrayList<>();
+        for (int i = 0; i < getNumberOfNeurons(); i++) {
+            values.add(inputNeurons.get(i).getValue());
+        }
+
+        return values;
     }
 
     public void reward(int index, double value, List<Integer> listOfInputNeuronIndexes) {

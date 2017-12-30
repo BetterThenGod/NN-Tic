@@ -17,7 +17,7 @@ public class HiddenNeuron extends Neuron {
 
     private List<Integer> lastUsedInputNeurons = new ArrayList<>();
 
-    public void fire(List<Field> fields, List<Double> inputWeights, PlayerEnum forPlayer) {
+    public void activate(List<Field> fields, List<Double> values, List<Double> inputWeights, PlayerEnum forPlayer) {
 
         setInputWeights(inputWeights);
 
@@ -44,21 +44,21 @@ public class HiddenNeuron extends Neuron {
         int inputNum = 0;
         for (int i = 1; i <= 9; i++) {
             if (fields.get(inputNum).getOwner() == PlayerEnum.NONE) {
-                sumOfInputWeights += (inputWeights.get(inputNum) * fields.get(inputNum).getValue());
+                sumOfInputWeights += (inputWeights.get(inputNum) * values.get(inputNum));
                 if (isFirstMove) {
                     firstUsedInputNeurons.add(inputNum);
                 }
                 lastUsedInputNeurons.add(inputNum);
                 inputNum += 3;
             } else if (fields.get(inputNum + 1).getOwner() == forPlayer) {
-                sumOfInputWeights += (inputWeights.get(inputNum + 1) * (fields.get(inputNum + 1).getValue() / 2));
+                sumOfInputWeights += (inputWeights.get(inputNum + 1) * (values.get(inputNum + 1) / 2));
                 if (isFirstMove) {
                     firstUsedInputNeurons.add(inputNum + 1);
                 }
                 lastUsedInputNeurons.add(inputNum + 1);
                 inputNum += 3;
             } else {
-                sumOfInputWeights += (inputWeights.get(inputNum + 2) * (fields.get(inputNum + 2).getValue() / 4));
+                sumOfInputWeights += (inputWeights.get(inputNum + 2) * (values.get(inputNum + 2) / 4));
                 if (isFirstMove) {
                     firstUsedInputNeurons.add(inputNum + 2);
                 }
@@ -67,7 +67,7 @@ public class HiddenNeuron extends Neuron {
             }
         }
 
-        positionValue = 1 / 1 - Math.exp(sumOfInputWeights * (-1));
+        positionValue = 1 / (1 + Math.exp(sumOfInputWeights * (-1)));
     }
 
     public boolean isCandidateMove() {
