@@ -1,5 +1,10 @@
 # gamma-tic-tac-toe
 
+## introduction
+
+Please see the following blog post for more information on this project
+https://blog.codecentric.de/en/2018/01/gamma-tictactoe-neural-network-machine-learning-simple-game/
+
 ## compilation
 
 Just clone the repository any run `mvn clean compile package` in the gamma-engine directory to compile the project.
